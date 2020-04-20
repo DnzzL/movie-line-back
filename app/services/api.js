@@ -1,4 +1,12 @@
 const OS = require('opensubtitles-api');
+const imdb = require('imdb-api');
+
+async function searchTitles(searchText) {
+  return await imdb.search(
+    { name: searchText },
+    { apiKey: process.env.IMDB_API_KEY }
+  );
+}
 
 async function queryOpenSubtitles(language, imdbId) {
   const OpenSubtitles = new OS({
@@ -16,5 +24,6 @@ async function queryOpenSubtitles(language, imdbId) {
 }
 
 module.exports = {
+  searchTitles,
   queryOpenSubtitles
 };

@@ -7,10 +7,10 @@ async function subtitlesToBuffer(url) {
   return buffer.toString('utf8');
 }
 
-async function getSubtitles(subtitles) {
+async function getSubtitles(languageCode, subtitles) {
   let srt = '';
   try {
-    srt = await subtitlesToBuffer(subtitles.fr[0].url);
+    srt = await subtitlesToBuffer(subtitles[languageCode][0].url);
   } catch (error) {
     throw error;
   }
@@ -19,5 +19,5 @@ async function getSubtitles(subtitles) {
 
 module.exports = {
   subtitlesToBuffer,
-  getSubtitles
+  getSubtitles,
 };

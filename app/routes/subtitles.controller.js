@@ -3,6 +3,7 @@ const router = express.Router();
 const apiService = require('../services/api.js');
 const downloadService = require('../services/download.js');
 const searchService = require('../services/search.js');
+const languageService = require('../services/language.js');
 
 router.post('/', getReplica);
 
@@ -16,7 +17,10 @@ async function getReplica(req, res) {
   );
   let queryResults = [];
   try {
-    queryResults = await apiService.queryOpenSubtitles(language, imdbId);
+    queryResults = await apiService.queryOpenSubtitles(
+      languageService.getAlpha3Code(language),
+      imdbId
+    );
   } catch (error) {
     let err = new Error(`could not find subtitles: ${error}`);
     res.status(403).send(err.message);
@@ -28,7 +32,10 @@ async function getReplica(req, res) {
 
   let data = [];
   try {
-    data = await downloadService.getSubtitles(queryResults);
+    data = await downloadService.getSubtitles(
+      languageService.getAlpha2Code(language),
+      queryResults
+    );
   } catch (error) {
     console.log('could not get subtitles: ', error);
   }
